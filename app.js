@@ -1,12 +1,15 @@
 var http = require('http');
-var $ = require('cheerio');
 
-http.get('http://www.americanas.com.br/linha/267868/informatica/notebook', function(err, status, html) {
-    var products = $(html).find('.productInfo');
-    for (var i = products.length - 1; i >= 0; i--) {
-        console.log($(products[i]).find('.prodTitle').text().trim());
-        console.log($(products[i]).find('.sale').text().trim());
-    };
+http.get("http://compras.dados.gov.br/contratos/v1/contratos.json", function(res) {
+    console.log("Got response: " + res.statusCode);
+
+    if(res.statusCode == 200){
+        res.on('data', function(d) {
+            console.info('GET result:\n');
+            process.stdout.write(d);
+            console.info('\n\nCall completed');
+        });
+    }
 }).on('error', function(e) {
     console.log("Got error: " + e.message);
 });
